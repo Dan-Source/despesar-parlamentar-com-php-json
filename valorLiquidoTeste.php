@@ -11,13 +11,17 @@
     <?php
     $id = 204554;
     $ano= 2020;
-    $total = 0;
+    //$total = 0;
     $url = "https://dadosabertos.camara.leg.br/api/v2/deputados/$id/despesas/?ano=$ano";
 
+    function preencherUrlComIdEAno($id, $ano){
+        $url = "https://dadosabertos.camara.leg.br/api/v2/deputados/$id/despesas/?ano=$ano";
+        return $url;
+    };
     function somarDadosPorUrl($url)
      {
         global $total;
-        echo $url."<br>";
+        //echo $url."<br>";
         $x = curl_init($url);
 
         curl_setopt($x, CURLOPT_RETURNTRANSFER, true);
@@ -28,7 +32,7 @@
             $valorLiquido = $key -> valorLiquido;
             $total = $total + $valorLiquido;
         };
-        echo $total."<br>";;
+        //echo $total."<br>";;
 
         if(pegarProximoUrl($despesas_liquidas_do_deputado) !== false){
             somarDadosPorUrl(pegarProximoUrl($despesas_liquidas_do_deputado));
@@ -45,7 +49,9 @@
         return false;
      }
 
-    somarDadosPorUrl("https://dadosabertos.camara.leg.br/api/v2/deputados/$id/despesas/?ano=$ano");
+    somarDadosPorUrl(preencherUrlComIdEAno($id, $ano));
+
+    echo $total;
 
     
 
